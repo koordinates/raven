@@ -13,6 +13,7 @@ import datetime
 import hashlib
 import logging
 import os
+import sys
 import time
 import urllib2
 import uuid
@@ -383,10 +384,10 @@ class Client(object):
         Sends a request to a remote webserver using HTTP POST.
         """
         req = urllib2.Request(url, headers=headers)
-        try:
-            response = urllib2.urlopen(req, data, self.timeout).read()
-        except:
+        if sys.version_info < (2, 6):
             response = urllib2.urlopen(req, data).read()
+        else:
+            response = urllib2.urlopen(req, data, self.timeout).read()
         return response
 
     def send(self, **data):
